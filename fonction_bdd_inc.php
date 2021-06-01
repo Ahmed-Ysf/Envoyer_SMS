@@ -6,7 +6,7 @@ define("MOTDEPASSE", "toto");
 define("NOMDELABASE", "ballon2021");
 define("URL", "http://touchardinforeseau.servehttp.com/Ruche/api/sendSMS");
 define("NUMERO", "0766046565");
-define("CLE_API", "DTJ58NCQSV");
+define("CLE_API", "O7VZJ5LOABU");
 
 /**
  * @brief crée la connexion avec la base de donnée et retourne l'objet PDO pour manipuler la base
@@ -25,7 +25,7 @@ function connexionBdd() {
     }
 }
 
-function position(&$altitude2, &$longitude2, &$latitude2,&$diff,&$diff1) {
+function position(&$altitude2, &$longitude2, &$latitude2, &$diff) {
     try {
         // connexion BDD
         $bdd = connexionBdd();
@@ -33,19 +33,17 @@ function position(&$altitude2, &$longitude2, &$latitude2,&$diff,&$diff1) {
                 . "order by horodatage DESC LIMIT 2; ");
         $ligne1 = $requete->fetch();
         $ligne2 = $requete->fetch();
-        $altitude1 = $ligne2['altitude'];
-        $altitude2 = $ligne1['altitude'];
+        $altitude1 = $ligne2['altitude'];   //avant dernier point 
+        $altitude2 = $ligne1['altitude'];   //dernier point
         $longitude2 = $ligne1['longitude'];
         $latitude2 = $ligne1['latitude'];
        
         $diff = ($altitude2 - $altitude1);
-        $diff1 = ($altitude1 - $altitude2);
-        
-        
-        
-
-
-
+        if($diff < 0)
+        {
+            $diff = -$diff;
+        }
+       
         // libération des ressources de la requête
         $requete->closeCursor();
     } catch (PDOException $ex) {
