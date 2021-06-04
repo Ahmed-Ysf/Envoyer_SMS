@@ -5,8 +5,8 @@ define("LOGIN", "root");
 define("MOTDEPASSE", "toto");
 define("NOMDELABASE", "ballon2021");
 define("URL", "http://touchardinforeseau.servehttp.com/Ruche/api/sendSMS");
-define("NUMERO", "0766046565");
-define("CLE_API", "O7VZJ5LOABU");
+define("NUMERO", "0763523944");
+define("CLE_API", "DTJ58NCQSV");
 
 /**
  * @brief crée la connexion avec la base de donnée et retourne l'objet PDO pour manipuler la base
@@ -50,6 +50,17 @@ function position(&$altitude2, &$longitude2, &$latitude2, &$diff) {
         print "Erreur : " . $ex->getMessage() . "<br/>";
         die();
     }
+}
+
+function formerMessageSMS($device, $longitude, $latitude, $altitude) {
+
+    $url = 'http://touchardinforeseau.servehttp.com/Ruche/api/sendSMS';
+    $apikey = 'key=JCCJDPMAF6WRHX';
+    $message = sprintf("Device:%s \nLongitude:%.7f\nLatitude:%.7f\nAltitude:%d\n", $device, $longitude, $latitude, $altitude);
+
+    $urlGoogle = "https://www.google.com/maps/search/?api=1%26query={$latitude},{$longitude}";
+    $message .= $urlGoogle;
+    return $message;
 }
 
 function EnvoyerSMS($numero, $message, $key) {
